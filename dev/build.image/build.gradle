@@ -675,7 +675,7 @@ if (isBuildOsNativePackages){
         rename { it.replace(".template", "") }
     }
 
-    task buildOsNativePackages(type:Exec) {
+    task buildOsNativePackages(type: Exec) {
         dependsOn copyOpenLiberty
         dependsOn updateChangelogTemplate
         dependsOn updateSpecTemplate

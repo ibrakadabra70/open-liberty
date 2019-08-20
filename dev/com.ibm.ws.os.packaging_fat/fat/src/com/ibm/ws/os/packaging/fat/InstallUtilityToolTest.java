@@ -46,7 +46,7 @@ public abstract class InstallUtilityToolTest {
      */
     protected static void setupEnv() throws Exception {
         final String METHOD_NAME = "setup";
-        public String javaHome;
+        final String javaHome;
 	server = LibertyServerFactory.getLibertyServer("com.ibm.ws.os.packaging_fat");
         installRoot = server.getInstallRoot();
         Log.info(c, METHOD_NAME, "installRoot: " + installRoot);

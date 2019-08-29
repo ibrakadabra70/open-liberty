@@ -24,6 +24,7 @@ public class InstallRhelTest extends InstallUtilityToolTest{
         Assume.assumeTrue(isLinuxRhel());
         //Assume.assumeTrue(ConnectedToIMRepo);
         setupEnv();
+	createServerEnv();
     }
 
     @AfterClass
@@ -71,7 +72,7 @@ public class InstallRhelTest extends InstallUtilityToolTest{
         entering(c, METHOD_NAME);
 
         String[] param1s = { "start", "openliberty@defaultServer.service" };
-        ProgramOutput po1 = runCommand(METHOD_NAME, "sudo JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.4.11-0.el7_6.x86_64  systemctl", param1s);
+        ProgramOutput po1 = runCommand(METHOD_NAME, "sudo systemctl", param1s);
         if (po1.getReturnCode() != 0){
             String[] paramAs = { "status", "openliberty@defaultServer.service", "-l" };
             ProgramOutput poA = runCommand("checkServerStatus", "sudo systemctl", paramAs);

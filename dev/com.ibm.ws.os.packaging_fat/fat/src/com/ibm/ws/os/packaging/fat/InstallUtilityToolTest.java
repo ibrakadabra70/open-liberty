@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.logging.Logger; 
 
 import com.ibm.websphere.simplicity.ProgramOutput;
 import com.ibm.websphere.simplicity.RemoteFile;
@@ -35,7 +36,8 @@ public abstract class InstallUtilityToolTest {
     //Need to ensure JAVA_HOME is set correctly - can't rely on user's environment to be set to the same Java as the build/runtime environment
     protected static Properties _envVars = new Properties();
     public static boolean connectedToRepo = true;
-
+    Logger logger = Logger.getLogger("com.api.jar"); 
+    public static String javaHome;
     /**
      * Setup the environment.
      * 
@@ -46,20 +48,34 @@ public abstract class InstallUtilityToolTest {
      */
     protected static void setupEnv() throws Exception {
         final String METHOD_NAME = "setup";
-        final String javaHome;
 	server = LibertyServerFactory.getLibertyServer("com.ibm.ws.os.packaging_fat");
         installRoot = server.getInstallRoot();
         Log.info(c, METHOD_NAME, "installRoot: " + installRoot);
         javaHome = server.getMachineJavaJDK();
         Log.info(c, METHOD_NAME, "javaHome: " + javaHome);
-        _envVars.setProperty("JAVA_HOME", javaHome);
-        // if (envVars != null)
-        //     _envVars.putAll(envVars);
-        Log.info(c, METHOD_NAME, "Using additional env props: " + _envVars.toString());
         cleanDirectories = new ArrayList<String>();
         cleanFiles = new ArrayList<String>();
     }
-
+    protected static void createServerEnv() throws Exception {
+        File sharedDirectory = new File("/var/lib/openliberty/usr/shared");
+        boolean directoryCreated = sharedDirectory.mkdir();
+        
+        if (directoryCreated) {
+            logger.info("directory was created successfully");
+        } else {
+           logger.info("failed trying to create the directory/Directory already exists");
+        }
+        File serverFile = new File("/var/lib/openliberty/usr/shared/server.env");
+        boolean fileCreated = serverFile.createNewFile();
+        if (fileCreated) {
+            logger.info("file was created successfully");
+        } else {
+            logger.info("failed trying to create the file/File already exists");
+        }
+        BufferedWriter writer = new BufferedWriter(new FileWriter(serverFile));
+        writer.write(javaHome);
+        writer.close();
+    }
     protected static void entering(Class<?> c, String METHOD_NAME) {
         Log.info(c, METHOD_NAME, "---- " + METHOD_NAME + " : entering ----------------------------");
     }

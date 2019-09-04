@@ -36,7 +36,7 @@ public abstract class InstallUtilityToolTest {
     //Need to ensure JAVA_HOME is set correctly - can't rely on user's environment to be set to the same Java as the build/runtime environment
     protected static Properties _envVars = new Properties();
     public static boolean connectedToRepo = true;
-    Logger logger = Logger.getLogger("com.api.jar"); 
+    public static Logger logger = Logger.getLogger("com.api.jar"); 
     public static String javaHome;
     /**
      * Setup the environment.

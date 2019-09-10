@@ -57,21 +57,11 @@ public abstract class InstallUtilityToolTest {
         cleanFiles = new ArrayList<String>();
     }
     protected static void createServerEnv() throws Exception {
-        File sharedDirectory = new File("/var/lib/openliberty/usr/shared");
-        boolean directoryCreated = sharedDirectory.mkdir();
-        
-        if (directoryCreated) {
-            logger.info("directory was created successfully");
-        } else {
-           logger.info("failed trying to create the directory/Directory already exists");
-        }
-        File serverFile = new File("/var/lib/openliberty/usr/shared/server.env");
-        boolean fileCreated = serverFile.createNewFile();
-        if (fileCreated) {
-            logger.info("file was created successfully");
-        } else {
-            logger.info("failed trying to create the file/File already exists");
-        }
+        Process p = Runtime.getRuntime().exec("sudo mkdir /var/lib/openliberty/usr/shared");
+        Process p2 = Runtime.getRuntime().exec("chown -R openliberty:openliberty /var/lib/openliberty/usr/shared");
+        Process p3 = Runtime.getRuntime().exec("sudo touch /Users/ibrahim.abdo@ibm.com/Desktop/shared/server.env");
+    	Process p4 = Runtime.getRuntime().exec("chown -R openliberty:openliberty /var/lib/openliberty/usr/shared/server.env");
+        File serverFile = new File("/Users/ibrahim.abdo@ibm.com/Desktop/shared/server.env");
         BufferedWriter writer = new BufferedWriter(new FileWriter(serverFile));
         writer.write(javaHome);
         writer.close();

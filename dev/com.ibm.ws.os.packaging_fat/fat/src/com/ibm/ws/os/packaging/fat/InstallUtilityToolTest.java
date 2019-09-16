@@ -67,7 +67,7 @@ public abstract class InstallUtilityToolTest {
 	 else {
 	    logger.info("failed trying to create the directory");
 	}
-        Process p2 = Runtime.getRuntime().exec("chown -R openliberty:openliberty /var/lib/openliberty/usr/shared");
+        Process p2 = Runtime.getRuntime().exec("sudo chown -R openliberty:openliberty /var/lib/openliberty/usr/shared");
         Process p3 = Runtime.getRuntime().exec("sudo touch /var/lib/openliberty/usr/shared/server.env");
     	boolean serverEnvExists = serverFile.exists();
 	if (serverEnvExists) {
@@ -76,7 +76,7 @@ public abstract class InstallUtilityToolTest {
 	 else {
 	    logger.info("failed trying to create the file");
 	}
-	Process p4 = Runtime.getRuntime().exec("chown -R openliberty:openliberty /var/lib/openliberty/usr/shared/server.env");
+	Process p4 = Runtime.getRuntime().exec("sudo chown -R openliberty:openliberty /var/lib/openliberty/usr/shared/server.env");
         BufferedWriter writer = new BufferedWriter(new FileWriter(serverFile));
         writer.write(javaHome);
         writer.close();

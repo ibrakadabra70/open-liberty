@@ -57,18 +57,33 @@ public abstract class InstallUtilityToolTest {
         cleanFiles = new ArrayList<String>();
     }
     protected static void createServerEnv() throws Exception {
+        File openLib = new File("/var/lib/openliberty");
+	File usrDir = new File("/var/lib/openliberty/usr");
+	boolean openLibExists = openLib.exists();
+	boolean usrDirExists = usrDir.exists();
+	if (openLibExists) {
+            logger.info("/var/lib/openliberty and /var/lib/openliberty/usr found. OpenLiberty is Installed");
+        }
+        else {
+            logger.info("OpenLiberty did not install successfully");
+        }
+
         File sharedDir = new File("/var/lib/openliberty/usr/shared");
         File serverFile = new File("/var/lib/openliberty/usr/shared/server.env");
-	Process p = Runtime.getRuntime().exec("sudo mkdir /var/lib/openliberty/usr/shared");
+	String[] param1s = {"/var/lib/openliberty/usr/shared"};
+	ProgramOutput po1 = runCommand("createShared", "sudo mkdir", param1s);
         boolean sharedExists = sharedDir.exists();
 	if (sharedExists) {
             logger.info("directory was created successfully");
 	}
 	 else {
+	    
 	    logger.info("failed trying to create the directory");
 	}
-        Process p2 = Runtime.getRuntime().exec("sudo chown -R openliberty:openliberty /var/lib/openliberty/usr/shared");
-        Process p3 = Runtime.getRuntime().exec("sudo touch /var/lib/openliberty/usr/shared/server.env");
+        String[] param2s = { "-R", "openliberty:openliberty", "/var/lib/openliberty/usr/shared" }; 
+        ProgramOutput po2 = runCommand("sharedPerm", "sudo chown", param2s);
+	String[] param3s = {"/var/lib/openliberty/usr/shared/server.env"};
+        ProgramOutput po3 = runCommand("createServerFile", "sudo touch", param3s);
     	boolean serverEnvExists = serverFile.exists();
 	if (serverEnvExists) {
 	    logger.info("file was created successfully");
@@ -76,7 +91,8 @@ public abstract class InstallUtilityToolTest {
 	 else {
 	    logger.info("failed trying to create the file");
 	}
-	Process p4 = Runtime.getRuntime().exec("sudo chown -R openliberty:openliberty /var/lib/openliberty/usr/shared/server.env");
+	String[] param4s = { "-R", "openliberty:openliberty", "/var/lib/openliberty/usr/shared/server.env" };
+        ProgramOutput po4= runCommand("serverPerm", "sudo chown", param4s);
         BufferedWriter writer = new BufferedWriter(new FileWriter(serverFile));
         writer.write(javaHome);
         writer.close();
@@ -130,7 +146,7 @@ public abstract class InstallUtilityToolTest {
         return false;
     }
 
-    protected ProgramOutput runCommand(String testcase, String command, String[] params) throws Exception {
+    protected static ProgramOutput runCommand(String testcase, String command, String[] params) throws Exception {
         String args = "";
         for (String param : params) {
             args = args + " " + param;

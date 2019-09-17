@@ -24,7 +24,6 @@ public class InstallUbuntuTest extends InstallUtilityToolTest{
         Assume.assumeTrue(isLinuxUbuntu());
         //Assume.assumeTrue(ConnectedToIMRepo);
         setupEnv();
-        createServerEnv();
     }
 
     @AfterClass
@@ -37,7 +36,7 @@ public class InstallUbuntuTest extends InstallUtilityToolTest{
 
     @Test
     public void testJavaInstall() throws Exception {
-       
+
         String METHOD_NAME = "testJavaInstall";
         entering(c, METHOD_NAME);
 
@@ -49,7 +48,7 @@ public class InstallUbuntuTest extends InstallUtilityToolTest{
 
     @Test
     public void testVerifyDebInstall() throws Exception {
-       
+
         String METHOD_NAME = "testVerifyDebInstall";
         entering(c, METHOD_NAME);
 
@@ -64,7 +63,7 @@ public class InstallUbuntuTest extends InstallUtilityToolTest{
 
     @Test
     public void testServerStartStopDeb() throws Exception {
-       
+
         String METHOD_NAME = "testServerStartStopDeb";
         entering(c, METHOD_NAME);
 
@@ -92,7 +91,7 @@ public class InstallUbuntuTest extends InstallUtilityToolTest{
 
     @Test
     public void testUninstallDeb() throws Exception {
-       
+
         String METHOD_NAME = "testUninstallDeb";
         entering(c, METHOD_NAME);
 

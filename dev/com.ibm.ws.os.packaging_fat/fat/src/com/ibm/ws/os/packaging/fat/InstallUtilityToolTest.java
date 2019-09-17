@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
-import java.util.logging.Logger; 
 
 import com.ibm.websphere.simplicity.ProgramOutput;
 import com.ibm.websphere.simplicity.RemoteFile;
@@ -36,8 +35,7 @@ public abstract class InstallUtilityToolTest {
     //Need to ensure JAVA_HOME is set correctly - can't rely on user's environment to be set to the same Java as the build/runtime environment
     protected static Properties _envVars = new Properties();
     public static boolean connectedToRepo = true;
-    public static Logger logger = Logger.getLogger("com.api.jar"); 
-    public static String javaHome;
+
     /**
      * Setup the environment.
      * 
@@ -48,55 +46,20 @@ public abstract class InstallUtilityToolTest {
      */
     protected static void setupEnv() throws Exception {
         final String METHOD_NAME = "setup";
-	server = LibertyServerFactory.getLibertyServer("com.ibm.ws.os.packaging_fat");
+	final String javaHome;
+        server = LibertyServerFactory.getLibertyServer("com.ibm.ws.os.packaging_fat");
         installRoot = server.getInstallRoot();
         Log.info(c, METHOD_NAME, "installRoot: " + installRoot);
         javaHome = server.getMachineJavaJDK();
         Log.info(c, METHOD_NAME, "javaHome: " + javaHome);
+        _envVars.setProperty("JAVA_HOME", javaHome);
+        // if (envVars != null)
+        //     _envVars.putAll(envVars);
+        Log.info(c, METHOD_NAME, "Using additional env props: " + _envVars.toString());
         cleanDirectories = new ArrayList<String>();
         cleanFiles = new ArrayList<String>();
     }
-    protected static void createServerEnv() throws Exception {
-        File openLib = new File("/var/lib/openliberty");
-	File usrDir = new File("/var/lib/openliberty/usr");
-	boolean openLibExists = openLib.exists();
-	boolean usrDirExists = usrDir.exists();
-	if (openLibExists) {
-            logger.info("/var/lib/openliberty and /var/lib/openliberty/usr found. OpenLiberty is Installed");
-        }
-        else {
-            logger.info("OpenLiberty did not install successfully");
-        }
 
-        File sharedDir = new File("/var/lib/openliberty/usr/shared");
-        File serverFile = new File("/var/lib/openliberty/usr/shared/server.env");
-	String[] param1s = {"/var/lib/openliberty/usr/shared"};
-	ProgramOutput po1 = runCommand("createShared", "sudo mkdir", param1s);
-        boolean sharedExists = sharedDir.exists();
-	if (sharedExists) {
-            logger.info("directory was created successfully");
-	}
-	 else {
-	    
-	    logger.info("failed trying to create the directory");
-	}
-        String[] param2s = { "-R", "openliberty:openliberty", "/var/lib/openliberty/usr/shared" }; 
-        ProgramOutput po2 = runCommand("sharedPerm", "sudo chown", param2s);
-	String[] param3s = {"/var/lib/openliberty/usr/shared/server.env"};
-        ProgramOutput po3 = runCommand("createServerFile", "sudo touch", param3s);
-    	boolean serverEnvExists = serverFile.exists();
-	if (serverEnvExists) {
-	    logger.info("file was created successfully");
-	}
-	 else {
-	    logger.info("failed trying to create the file");
-	}
-	String[] param4s = { "-R", "openliberty:openliberty", "/var/lib/openliberty/usr/shared/server.env" };
-        ProgramOutput po4= runCommand("serverPerm", "sudo chown", param4s);
-        BufferedWriter writer = new BufferedWriter(new FileWriter(serverFile));
-        writer.write(javaHome);
-        writer.close();
-    }
     protected static void entering(Class<?> c, String METHOD_NAME) {
         Log.info(c, METHOD_NAME, "---- " + METHOD_NAME + " : entering ----------------------------");
     }
@@ -146,7 +109,7 @@ public abstract class InstallUtilityToolTest {
         return false;
     }
 
-    protected static ProgramOutput runCommand(String testcase, String command, String[] params) throws Exception {
+    protected ProgramOutput runCommand(String testcase, String command, String[] params) throws Exception {
         String args = "";
         for (String param : params) {
             args = args + " " + param;

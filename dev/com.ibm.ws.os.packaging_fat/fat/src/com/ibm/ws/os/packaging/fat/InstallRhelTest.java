@@ -24,7 +24,6 @@ public class InstallRhelTest extends InstallUtilityToolTest{
         Assume.assumeTrue(isLinuxRhel());
         //Assume.assumeTrue(ConnectedToIMRepo);
         setupEnv();
-	createServerEnv();
     }
 
     @AfterClass
@@ -37,7 +36,7 @@ public class InstallRhelTest extends InstallUtilityToolTest{
 
     @Test
     public void testJavaInstall() throws Exception {
-       
+
         String METHOD_NAME = "testJavaInstall";
         entering(c, METHOD_NAME);
 
@@ -55,7 +54,7 @@ public class InstallRhelTest extends InstallUtilityToolTest{
 
     @Test
     public void testVerifyRpmInstall() throws Exception {
-       
+
         String METHOD_NAME = "testVerifyRpmInstall";
         entering(c, METHOD_NAME);
 
@@ -67,7 +66,7 @@ public class InstallRhelTest extends InstallUtilityToolTest{
 
     @Test
     public void testServerStartStopRpm() throws Exception {
-       
+
         String METHOD_NAME = "testServerStartStopRpm";
         entering(c, METHOD_NAME);
 
@@ -82,7 +81,7 @@ public class InstallRhelTest extends InstallUtilityToolTest{
         File f = new File("/var/run/openliberty/defaultServer.pid");
         assertTrue("Server pid should exist",
                    f.exists());
-        
+
         String[] param2s = { "stop", "openliberty@defaultServer.service" };
         ProgramOutput po2 = runCommand(METHOD_NAME, "sudo systemctl", param2s);
         if (po2.getReturnCode() != 0){
@@ -95,7 +94,7 @@ public class InstallRhelTest extends InstallUtilityToolTest{
 
     @Test
     public void testUninstallRpm() throws Exception {
-       
+
         String METHOD_NAME = "testUninstallRpm";
         entering(c, METHOD_NAME);
 

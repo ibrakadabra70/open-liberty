@@ -110,8 +110,8 @@ public abstract class InstallUtilityToolTest {
         ProgramOutput po8= runCommand("changeJavaPerm", "sudo chmod", param8s);
         String[] param9s = {"ls -l","/home/jazz_build/" +javaHome+ "/bin/java"};
         ProgramOutput po9= runCommand("listFilesInJava", "sudo", param9s);
-        String output2 = po9.getStdout();
-        logger.info(output2);
+        String output3 = po9.getStdout();
+        logger.info(output3);
         exiting(c, METHOD_NAME);
     }
 

@@ -36,15 +36,20 @@ public class InstallRhelTest extends InstallUtilityToolTest{
 
     @AfterClass
     public static void cleanup() throws Exception {
-       if (isLinuxRhel()){
-            final String METHOD_NAME = "cleanup";
-            entering(c, METHOD_NAME);
-            cleanupEnv();
-            exiting(c, METHOD_NAME);
-        }
-        else {
-             logger.info("This machine is not Rhel");
-        }
+       if (openLibExists) {
+           if (isLinuxRhel()){
+               final String METHOD_NAME = "cleanup";
+               entering(c, METHOD_NAME);
+               cleanupEnv();
+               exiting(c, METHOD_NAME);
+           }
+           else {
+               logger.info("This machine is not Rhel");
+           }
+       }
+       else {
+           logger.info("OpenLiberty did not install successfully");
+       }
     }
 
     @Test

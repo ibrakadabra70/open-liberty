@@ -36,15 +36,20 @@ public class InstallUbuntuTest extends InstallUtilityToolTest{
 
     @AfterClass
     public static void cleanup() throws Exception {
-        if (isLinuxUbuntu()){
-	    final String METHOD_NAME = "cleanup";
-            entering(c, METHOD_NAME);
-            cleanupEnv();
-            exiting(c, METHOD_NAME);
+       if (openLibExists) { 
+           if (isLinuxUbuntu()){
+	       final String METHOD_NAME = "cleanup";
+               entering(c, METHOD_NAME);
+               cleanupEnv();
+               exiting(c, METHOD_NAME);
+	   }
+	   else {
+	       logger.info("This machine is not ubuntu");
+	   }
 	}
-	else {
-	     logger.info("This machine is not ubuntu");
-	}
+        else {
+            logger.info("OpenLiberty did not install successfully");
+        }
     }
 
     @Test

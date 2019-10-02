@@ -93,15 +93,25 @@ public abstract class InstallUtilityToolTest {
             logger.info("failed trying to create the file");
         }
         String[] param6s = {installRoot +  "/server.env /var/lib/openliberty/usr/shared"};
-        ProgramOutput po6 = runCommand("createServerFile", "sudo mv", param6s);
+        ProgramOutput po6 = runCommand("moveServerFile", "sudo mv", param6s);
         String[] param3s = { "-R", "openliberty:openliberty", "/var/lib/openliberty/usr/shared" };
         ProgramOutput po3 = runCommand("sharedPerm", "sudo chown", param3s);
         String[] param4s = { "-R", "openliberty:openliberty", "/var/lib/openliberty/usr/shared/server.env" };
         ProgramOutput po4= runCommand("serverPerm", "sudo chown", param4s);
         String[] param5s = {"ls -l","/var/lib/openliberty/usr/shared"};
-        ProgramOutput po5= runCommand("listFiles", "sudo", param5s);
+        ProgramOutput po5= runCommand("listFilesInShared", "sudo", param5s);
         String output = po5.getStdout();
         logger.info(output);
+	String[] param7s = {"ls -l","/home/jazz_build/" +javaHome+ "/bin/java"};
+        ProgramOutput po7= runCommand("listFilesInJava", "sudo", param7s);
+        String output2 = po7.getStdout();
+        logger.info(output2);
+	String[] param8s = {"a+x","/home/jazz_build/" +javaHome+ "/bin/java"};
+        ProgramOutput po8= runCommand("changeJavaPerm", "sudo chmod", param8s);
+        String[] param9s = {"ls -l","/home/jazz_build/" +javaHome+ "/bin/java"};
+        ProgramOutput po9= runCommand("listFilesInJava", "sudo", param9s);
+        String output2 = po9.getStdout();
+        logger.info(output2);
         exiting(c, METHOD_NAME);
     }
 

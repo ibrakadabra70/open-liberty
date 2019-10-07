@@ -95,7 +95,18 @@ public class InstallUbuntuTest extends InstallUtilityToolTest{
         if (openLibExists) {
             String METHOD_NAME = "testServerStartStopDeb";
             entering(c, METHOD_NAME);
-
+	
+	    String[] param7s = {"ls -l","/home/jazz_build/" +javaHome+ "/bin/java"};
+            ProgramOutput po7= runCommand("listFilesInJava", "sudo", param7s);
+            String output2 = po7.getStdout();
+            logger.info(output2);
+            String[] param8s = {"a+x","/home/jazz_build/" +javaHome+ "/bin/java"};
+            ProgramOutput po8= runCommand("changeJavaPerm", "sudo chmod", param8s);
+            String[] param9s = {"ls -l","/home/jazz_build/" +javaHome+ "/bin/java"};
+            ProgramOutput po9= runCommand("listFilesInJava", "sudo", param9s);
+            String output3 = po9.getStdout();
+       	    logger.info(output3);
+	    
             String[] param1s = { "start", "openliberty@defaultServer.service" };
             ProgramOutput po1 = runCommand(METHOD_NAME, "sudo systemctl", param1s);
             if (po1.getReturnCode() != 0){

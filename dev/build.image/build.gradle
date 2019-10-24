@@ -695,7 +695,8 @@ if (isBuildOsNativePackages){
         outputs.file(debs)
 
         errorOutput = new ByteArrayOutputStream()
-
+	
+	commandLine 'sh', 'chmod 777 buildOsNativePackages.sh'
         commandLine 'sh', './buildOsNativePackages.sh'
 	 
         if (isRelease){

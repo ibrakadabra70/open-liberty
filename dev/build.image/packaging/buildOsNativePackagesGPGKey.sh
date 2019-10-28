@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 #check that GPG_PASS is defined
 
 cd rpmbuild && rpmbuild -ba SPECS/openliberty.spec
@@ -21,13 +20,3 @@ else
      fi
      rm -f ~/.gnupg/pp.txt
 fi
-
-
-
-
-
-
-
-
-
-

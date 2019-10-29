@@ -648,7 +648,7 @@ if (isBuildOsNativePackages){
         include 'openliberty.spec.template'
         into 'packaging/rpmbuild/SPECS'
         filter { line -> line.replaceAll('@SPEC_VERSION@', bnd('libertyServiceVersion', 'Unknown')) }
-        rename { it.replace(".template", "") }
+        rename { it.replace(".template", ".template.1") }
     }
 
     task updateChangelogTemplate(type: Copy) {
@@ -677,9 +677,9 @@ if (isBuildOsNativePackages){
 
     task buildOsNativePackages(type:Exec) {
         dependsOn copyOpenLiberty
-        dependsOn updateChangelogTemplate
+        //dependsOn updateChangelogTemplate
         dependsOn updateSpecTemplate
-        dependsOn updateBuildPackageScriptTemplate
+        //dependsOn updateBuildPackageScriptTemplate
         dependsOn updateRulesTemplate
 
         workingDir 'packaging'
@@ -696,14 +696,8 @@ if (isBuildOsNativePackages){
 
         errorOutput = new ByteArrayOutputStream()
 	
-	commandLine 'sh', './buildOsNativePackages.sh', isRelease, bnd('libertyServiceVersion')	
-
-/*	if (isRelease){
-            commandLine 'sh', './buildOsNativePackagesGPGKey.sh'
-        } else{
-            commandLine 'sh', './buildOsNativePackagesNoGPGKey.sh'
-        }*/
-
+	commandLine 'sh', './buildOsNativePackages.sh', bnd('libertyServiceVersion'), isRelease
+	
         ignoreExitValue true
 
         doLast {
@@ -712,6 +706,7 @@ if (isBuildOsNativePackages){
             file('packaging/debuild/openliberty/debian/changelog').delete()
             file('packaging/buildOsNativePackages.sh').delete()
             file('packaging/debuild/openliberty/debian/rules').delete()
+	    file("$HOME/.gnupg/pp.txt").delete()
             if (execResult.getExitValue() != 0) {
                 logger.info("Script buildOsNativePackages.sh failed to run rpmbuild and debuild: " + errorOutput.toString())
             }

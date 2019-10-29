@@ -25,4 +25,4 @@ cp debuild/openliberty-$driverVer.tar.gz rpmbuild/SOURCES
 cd rpmbuild && rpmbuild -ba SPECS/openliberty.spec
 
 #building debuild
-cd ../debuild && debuild -d -b -us -uc
+cd ../debuild/openliberty/debian && debuild -d -b -us -uc
